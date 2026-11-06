@@ -14,8 +14,10 @@ Public visitors submit a contact form. Managers sign in and work the pipeline: s
 
 - Public lead capture form with validation errors
 - Manager login / logout
-- Leads list with status filter, search, and pagination
+- Leads list with status filter, search, today filter, and pagination
 - Lead detail: change status (`new`, `in_progress`, `won`, `lost`) and notes
+- Quick actions: Mark as won / Mark as lost
+- Delete lead from detail page and from the list (with confirm)
 
 ## Demo credentials
 

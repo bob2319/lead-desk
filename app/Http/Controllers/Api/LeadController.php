@@ -15,13 +15,15 @@ class LeadController extends Controller
 {
     public function index(Request $request): AnonymousResourceCollection
     {
-        $leads = Lead::query()
+        $query = Lead::query()
             ->status($request->query('status'))
-            ->search($request->query('search'))
-            ->latest()
-            ->paginate(15);
+            ->search($request->query('search'));
+            if ($request->boolean('today')) {
+                $query->whereDate('created_at', today());
+            }
+            $leads = $query->latest()->paginate(15);
 
-        return LeadResource::collection($leads);
+            return LeadResource::collection($leads);
     }
 
     public function store(StoreLeadRequest $request): LeadResource

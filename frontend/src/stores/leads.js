@@ -28,13 +28,13 @@ export const useLeadsStore = defineStore('leads', () => {
     }
   }
 
-  async function fetchLeads({ status = '', search = '', page = 1 } = {}) {
+  async function fetchLeads({ status = '', search = '', page = 1 , today = false } = {}) {
     loading.value = true
     error.value = null
 
     try {
       const { data } = await api.get('/api/leads', {
-        params: { status: status || undefined, search: search || undefined, page },
+        params: { status: status || undefined, search: search || undefined, page, today: today || undefined },
       })
       items.value = data.data
       meta.value = data.meta
@@ -84,7 +84,21 @@ export const useLeadsStore = defineStore('leads', () => {
       loading.value = false
     }
   }
+  async function deleteLead(id) {
+    loading.value = true
+    error.value = null
+    formErrors.value = {}
 
+    try {
+      await api.delete(`/api/leads/${id}`)
+    } catch (e) {
+      formErrors.value = e.response?.data?.errors || {}
+      error.value = e.response?.data?.message || 'Could not delete lead'
+      throw e
+    } finally {
+      loading.value = false
+    }
+  }
   return {
     items,
     meta,
@@ -96,5 +110,6 @@ export const useLeadsStore = defineStore('leads', () => {
     fetchLeads,
     fetchLead,
     updateLead,
+    deleteLead,
   }
 })

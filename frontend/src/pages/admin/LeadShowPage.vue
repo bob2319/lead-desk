@@ -1,9 +1,10 @@
 <script setup>
 import { computed, onMounted, reactive, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useLeadsStore } from '../../stores/leads'
 
 const route = useRoute()
+const router = useRouter()
 const leads = useLeadsStore()
 
 const form = reactive({
@@ -27,7 +28,27 @@ async function onSave() {
   })
 }
 
+
+async function changeStatus(status) {
+  await leads.updateLead(route.params.id, {
+    status: status,
+    notes: form.notes,
+  })
+  form.status = status
+}
+
+
+async function btnDeleteLead() {
+  if( !confirm('Delete this lead?')){
+    return
+  }
+
+  await leads.deleteLead(route.params.id)
+  router.push({ name: 'admin.leads' })
+}
+
 onMounted(load)
+
 watch(() => route.params.id, load)
 </script>
 
@@ -76,6 +97,22 @@ watch(() => route.params.id, load)
           {{ leads.loading ? 'Saving…' : 'Save changes' }}
         </button>
         <p v-if="saved && !leads.loading" class="muted">Last loaded / saved state is current.</p>
+        <button type="button" class="button-won-status" 
+        :class="{'button-won-status--activate': form.status === 'won'}" :disabled="leads.loading" 
+        @click="changeStatus('won')">
+        {{ leads.loading ? 'Saving…' : 'Mark as won' }}
+        </button>
+
+        <button type="button" class="button-lost-status" 
+        :class="{'button-lost-status--activate': form.status === 'lost'}" :disabled="leads.loading" 
+        @click="changeStatus('lost')">
+        {{ leads.loading ? 'Saving…' : 'Mark as lost' }}
+        </button>
+        <button type="button" class="button-delete-leads" 
+        :disabled="leads.loading" 
+        @click="btnDeleteLead()">
+        {{ leads.loading ? 'Deleting…' : 'Delete lead' }}
+        </button>
       </form>
     </template>
   </section>

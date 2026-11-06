@@ -294,6 +294,49 @@ code {
   border-radius: 6px;
 }
 
+.button-won-status {
+  background-color: #9ea5a4;
+  color: #000;
+  border-radius: 30px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid #9b2c2c;
+}
+
+
+.button-won-status--activate {
+  background-color: #18da6f;
+  color: #000;
+  border-color: #18da6f;
+  border: 1px solid #18da6f;
+  transition: all 0.2s ease-in-out;
+}
+
+.button-lost-status {
+  background-color: #757575;
+  color: #000;
+  border-radius: 30px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid #9c9c9c;
+}
+.button-lost-status--activate {
+  background-color: #ee5a5a;
+  color: #000;
+  border-color: #e95757;
+  border: 1px solid #d64b4b;
+  transition: all 0.2s ease-in-out;
+}
 @media (max-width: 720px) {
   .filters {
     flex-direction: column;

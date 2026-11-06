@@ -5,6 +5,7 @@ import { useLeadsStore } from '../../stores/leads'
 const leads = useLeadsStore()
 const status = ref('')
 const search = ref('')
+const today = ref(false)
 const page = ref(1)
 
 const statuses = [
@@ -19,6 +20,7 @@ async function load() {
   await leads.fetchLeads({
     status: status.value,
     search: search.value,
+    today: today.value,
     page: page.value,
   })
 }
@@ -32,9 +34,17 @@ function formatDate(value) {
   return new Date(value).toLocaleString()
 }
 
+async function btnDeleteCurrentLead(id) {
+  if( !confirm('Delete this lead?')){
+    return
+  }
+  await leads.deleteLead(id)
+  load()
+}
+
 onMounted(load)
 
-watch([status, search], () => {
+watch([status, search, today], () => {
   page.value = 1
   load()
 })
@@ -65,6 +75,13 @@ watch([status, search], () => {
           v-model="search"
           type="search"
           placeholder="Name, email, company, phone"
+        />
+      </label>
+      <label class="filters__field">
+        <span>Today only</span>
+        <input
+          v-model="today"
+          type="checkbox"
         />
       </label>
     </div>
@@ -101,6 +118,11 @@ watch([status, search], () => {
               >
                 Open
               </RouterLink>
+              <button type="button" class="button-delete-current-leads" 
+              :disabled="leads.loading" 
+              @click="btnDeleteCurrentLead(lead.id)">
+              {{ leads.loading ? 'Deleting…' : 'Delete' }}
+              </button>
             </td>
           </tr>
         </tbody>
