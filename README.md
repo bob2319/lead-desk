@@ -19,12 +19,38 @@ Public visitors submit a contact form. Managers sign in and work the pipeline: s
 - Quick actions: Mark as won / Mark as lost
 - Delete lead from detail page and from the list (with confirm)
 
+## Screenshots
+
+### Public lead form
+
+![Public lead capture form](docs/screenshots/01-public-form.png)
+
+### Admin leads pipeline
+
+![Admin leads list with filters](docs/screenshots/02-admin-leads.png)
+
+### Lead detail
+
+![Lead detail with status and notes](docs/screenshots/03-lead-detail.png)
+
 ## Demo credentials
 
 After seeding:
 
 - Email: `manager@leaddesk.test`
 - Password: `password`
+
+## Tests
+
+```bash
+php artisan test --filter=LeadApiTest
+```
+
+Feature coverage:
+- public create lead + validation
+- guest cannot list leads
+- authenticated list / status filter / today filter
+- login success and failure
 
 ## Requirements
 
